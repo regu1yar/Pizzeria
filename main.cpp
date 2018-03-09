@@ -1,4 +1,5 @@
-#include "tests.h"
+#include "PizzeriaTest.h"
+#include "PtrTest.h"
 
 int main(int argc, char *argv[]) {
 	::testing::InitGoogleTest(&argc, argv);

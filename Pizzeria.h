@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include <string>
 #include <cassert>
@@ -15,8 +17,8 @@ private:
 		std::cout << waiter_->takeAnOrder() << std::endl;
 		std::cout << waiter_->passToTheKitchen() << std::endl;
 		std::cout << cook_->startCooking() << std::endl;
-		Pizza pizza = director_.buildPizza();
-		pizza.composition();
+		std::shared_ptr<Pizza> pizza = director_.buildPizza();
+		pizza->composition();
 		std::cout << " was cooked" << std::endl;
 		std::cout << cook_->finishCooking() << std::endl;
 		std::cout << waiter_->completeTheOrder() << std::endl;
@@ -65,8 +67,8 @@ public:
 		return cook_->getLanguage();
 	}
 	std::string getPizza() {
-		Pizza pizza = director_.buildPizza();
-		return pizza.getName();
+		std::shared_ptr<Pizza> pizza = director_.buildPizza();
+		return pizza->getName();
 	}
 		
 };

@@ -8,11 +8,11 @@ protected:
 	Pizzeria pizzeria;
 
 	void SetUp() {
-		std::cout << "SET UP" << std::endl;
+		std::cout << "PIZZERIA TEST SET UP" << std::endl;
 	}
 	
 	void TearDown() {
-		std::cout << "TEARED DOWN" << std::endl;
+		std::cout << "PIZZERIA TEST TEARED DOWN" << std::endl;
 	}
 };
 

@@ -1,5 +1,8 @@
+#pragma once
+
 #include <iostream>
 #include <string>
+#include <memory>
 
 
 class Pizza {
@@ -15,10 +18,10 @@ public:
 	void setTopping(std::string topping) { topping_ = topping; }
 	void setDough(std::string dough) { dough_ = dough; }
 
-	std::string getName() { return name_; }
-	std::string getSauce() { return sauce_; }
-	std::string getTopping() { return topping_; }
-	std::string getDough() { return dough_; }
+	std::string getName() const { return name_; }
+	std::string getSauce() const { return sauce_; }
+	std::string getTopping() const { return topping_; }
+	std::string getDough() const { return dough_; }
 
 	void composition() {
 		std::cout << "Pizza with " << sauce_ << " sauce and " << topping_ << " on " << dough_ << " dough";
@@ -27,16 +30,22 @@ public:
 
 class PizzaBuilder {
 protected:
-	Pizza* pizza_;
+	std::string pizzaName_;
+	std::string pizzaSauce_;
+	std::string pizzaTopping_;
+	std::string pizzaDough_;
 
 public:
-	PizzaBuilder() : pizza_(nullptr) { }
-	~PizzaBuilder() { delete pizza_; }
+	PizzaBuilder() { }
+	~PizzaBuilder() { }
 
-	Pizza getPizza() { return *pizza_; }
-	void createPizza() {
-		delete pizza_;		
-		pizza_ = new Pizza;
+	std::shared_ptr<Pizza> getPizza() {
+		std::shared_ptr<Pizza> pizza(new Pizza);
+		pizza->setName(pizzaName_);
+		pizza->setSauce(pizzaSauce_);
+		pizza->setTopping(pizzaTopping_);
+		pizza->setDough(pizzaDough_);
+		return pizza;
 	}
 
 	virtual void buildName() = 0;
@@ -48,34 +57,34 @@ public:
 class PepperoniPizzaBuilder : public PizzaBuilder {
 public:
 	PepperoniPizzaBuilder() : PizzaBuilder() { }
-	~PepperoniPizzaBuilder() { delete pizza_; }
+	~PepperoniPizzaBuilder() { }
 
-	void buildName() { pizza_->setName("Pepperoni"); }
-	void buildSauce() { pizza_->setSauce("Tomamto"); }
-	void buildTopping() { pizza_->setTopping("Pepperoni"); }
-	void buildDough() { pizza_->setDough("Yeast"); }
+	void buildName() { pizzaName_ = "Pepperoni"; }
+	void buildSauce() { pizzaSauce_ = "Tomamto"; }
+	void buildTopping() { pizzaTopping_ = "Pepperoni"; }
+	void buildDough() { pizzaDough_ = "Yeast"; }
 };
 
 class ChorizoPizzaBuilder : public PizzaBuilder {
 public:
 	ChorizoPizzaBuilder() : PizzaBuilder() { }
-	~ChorizoPizzaBuilder() { delete pizza_; }
+	~ChorizoPizzaBuilder() { }
 
-	void buildName() { pizza_->setName("Chorizo"); }
-	void buildSauce() { pizza_->setSauce("Tomamto"); }
-	void buildTopping() { pizza_->setTopping("Sausages"); }
-	void buildDough() { pizza_->setDough("Batterless"); }
+	void buildName() { pizzaName_ = "Chorizo"; }
+	void buildSauce() { pizzaSauce_ = "Tomamto"; }
+	void buildTopping() { pizzaTopping_ = "Sausages"; }
+	void buildDough() { pizzaDough_ = "Batterless"; }
 };
 
 class ChickenCurryPizzaBuilder : public PizzaBuilder {
 public:
 	ChickenCurryPizzaBuilder() : PizzaBuilder() { }
-	~ChickenCurryPizzaBuilder() { delete pizza_; }
+	~ChickenCurryPizzaBuilder() { }
 
-	void buildName() { pizza_->setName("Chicken Curry"); }
-	void buildSauce() { pizza_->setSauce("Curry"); }
-	void buildTopping() { pizza_->setTopping("Pepperoni"); }
-	void buildDough() { pizza_->setDough("Yeast"); }
+	void buildName() { pizzaName_ = "Chicken Curry"; }
+	void buildSauce() { pizzaSauce_ = "Curry"; }
+	void buildTopping() { pizzaTopping_ = "Pepperoni"; }
+	void buildDough() { pizzaDough_ = "Yeast"; }
 };
 
 class Director {
@@ -84,13 +93,12 @@ private:
 
 public:
 	void setBuilder(PizzaBuilder* builder) { builder_ = builder; }
-	Pizza buildPizza() {
-		builder_->createPizza();
+	std::shared_ptr<Pizza> buildPizza() {
 		builder_->buildName();
 		builder_->buildSauce();
 		builder_->buildTopping();
 		builder_->buildDough();
-		Pizza pizza = builder_->getPizza();
+		std::shared_ptr<Pizza> pizza = builder_->getPizza();
 		return pizza;
 	}
 };
