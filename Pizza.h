@@ -13,10 +13,8 @@ private:
 	std::string dough_;
 
 public:
-	void setName(std::string name) { name_ = name; }
-	void setSauce(std::string sauce) { sauce_ = sauce; }
-	void setTopping(std::string topping) { topping_ = topping; }
-	void setDough(std::string dough) { dough_ = dough; }
+	Pizza(std::string name, std::string sauce, std::string topping, std::string dough) :
+	name_(name), sauce_(sauce), topping_(topping), dough_(dough) { }
 
 	std::string getName() const { return name_; }
 	std::string getSauce() const { return sauce_; }
@@ -40,11 +38,8 @@ public:
 	~PizzaBuilder() { }
 
 	std::shared_ptr<Pizza> getPizza() {
-		std::shared_ptr<Pizza> pizza(new Pizza);
-		pizza->setName(pizzaName_);
-		pizza->setSauce(pizzaSauce_);
-		pizza->setTopping(pizzaTopping_);
-		pizza->setDough(pizzaDough_);
+		std::shared_ptr<Pizza> pizza(new Pizza(pizzaName_, pizzaSauce_,
+					pizzaTopping_, pizzaDough_));
 		return pizza;
 	}
 
